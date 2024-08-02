@@ -45,8 +45,7 @@ NOTE: If you would like to access the completed data collection csv files as wel
 15. Run the following command: TOKENIZERS_PARALLELISM=False python3 main.py --dataset=spotify_tracks --dataset_dir=/PATH_TO_DATACOLLECTION/ --device=cpu --batch_size=1024 --print_freq=32 --lr=2e-5 --epochs=5 --margin=1 --num_negatives=20 --warm_threshold=0.2 --num_workers=8
 
 ## Sources
-1. Play music, find songs, and discover artists. Last.fm. (n.d.). ![Last.fm](https://www.last.fm/) 
-2. Groq is fast ai inference. Groq is Fast AI Inference. (n.d.-a). ![Groq](https://groq.com/?_gl=1%2A1n32j2o%2A_ga%2AMTA3MTY1MTQzNS4xNzIxOTQ4ODc4%2A_ga_4TD0X2GEZG%2AMTcyMjQ3MzI1Ni4zLjEuMTcyMjQ3MzI2Mi41NC4wLjA) 
-3. He, X., Liao, L., Zhang, H., Nie, L., Hu, X., & Chua, T.-S. (2017, Summer 26). Neural collaborative filtering. Neural Collaborative Filtering. ![Paper](https://arxiv.org/pdf/1708.05031) 
-4. Gossi, D., & Gunes, M. (n.d.). Lyric-based music recommendation - department of ... Lyric-Based Music Recommendation. ![Paper](https://www.cs.virginia.edu/~hw5x/Course/TextMining-2019Spring/docs/presentation/bea3ch.pdf)
-
+1. Play music, find songs, and discover artists. Last.fm. (n.d.). [Last.fm](https://www.last.fm/)
+2. Groq is fast ai inference. Groq is Fast AI Inference. (n.d.-a). [Groq](https://groq.com/?_gl=1%2A1n32j2o%2A_ga%2AMTA3MTY1MTQzNS4xNzIxOTQ4ODc4%2A_ga_4TD0X2GEZG%2AMTcyMjQ3MzI1Ni4zLjEuMTcyMjQ3MzI2Mi41NC4wLjA)
+3. He, X., Liao, L., Zhang, H., Nie, L., Hu, X., & Chua, T.-S. (2017, Summer 26). Neural collaborative filtering. Neural Collaborative Filtering. [Paper](https://arxiv.org/pdf/1708.05031)
+4. Gossi, D., & Gunes, M. (n.d.). Lyric-based music recommendation - department of ... Lyric-Based Music Recommendation. [Paper](https://www.cs.virginia.edu/~hw5x/Course/TextMining-2019Spring/docs/presentation/bea3ch.pdf)
