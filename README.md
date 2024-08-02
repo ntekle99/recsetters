@@ -22,18 +22,6 @@ With this code, we created our base model which uses song name as the essential 
 1. Song Summaries for our Apple Music and Spotify Datasets provided by an LLM (Groq API)
 2. Truncated Lyrics for both of the item Datasets, we will be using the first 25 truncated words of each song (Lyrics OVH API)
 
-## Our Paper
-Read our [paper](https://turquoise-carlynn-39.tiiny.site/):
-<table align="center" style="background-color: white; border-collapse: collapse;">
-  <tr>
-    <td align="center" style="padding: 10px; border: none;">
-      <a href="https://turquoise-carlynn-39.tiiny.site/">
-        <img src="Recommender_Paper-4.pdf" alt="paper preview" width="499">
-      </a>
-    </td>
-  </tr>
-</table>
-
 ## Usage instructions
 <!--
 Give details on how to install fork and install your project. You can get all of the python dependencies for your project by typing `pip3 freeze requirements.txt` on the system that runs your project. Add the generated `requirements.txt` to this repo.
