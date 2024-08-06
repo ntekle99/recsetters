@@ -1,4 +1,5 @@
-MuRS 2024: Lyrics vs Summary
+# MuRS 2024: Lyrics vs Summary
+
 Developed by: 
 - [Alline Ayala](https://github.com/ayalaa04) - `Electronic Systems Engineering Technology` - `Texas A&M`
 - [Noah Teckle](https://github.com/nteckle99) - `Electrical` - `University of Southern California` 
