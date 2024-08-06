@@ -1,5 +1,6 @@
 # MuRS 2024: Lyrics vs Summary
 
+This is the open sourced code for Lyrics vs Summary that is submitted to MuRS 2024 
 Developed by: 
 - [Alline Ayala](https://github.com/ayalaa04) - `Electronic Systems Engineering Technology` - `Texas A&M`
 - [Noah Teckle](https://github.com/nteckle99) - `Electrical` - `University of Southern California` 
