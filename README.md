@@ -52,3 +52,6 @@ NOTE: If you would like to access the completed data collection csv files as wel
 2. Groq is fast ai inference. Groq is Fast AI Inference. (n.d.-a). [Groq](https://groq.com/?_gl=1%2A1n32j2o%2A_ga%2AMTA3MTY1MTQzNS4xNzIxOTQ4ODc4%2A_ga_4TD0X2GEZG%2AMTcyMjQ3MzI1Ni4zLjEuMTcyMjQ3MzI2Mi41NC4wLjA)
 3. He, X., Liao, L., Zhang, H., Nie, L., Hu, X., & Chua, T.-S. (2017, Summer 26). Neural collaborative filtering. Neural Collaborative Filtering. [Paper](https://arxiv.org/pdf/1708.05031)
 4. Gossi, D., & Gunes, M. (n.d.). Lyric-based music recommendation - department of ... Lyric-Based Music Recommendation. [Paper](https://www.cs.virginia.edu/~hw5x/Course/TextMining-2019Spring/docs/presentation/bea3ch.pdf)
+
+## Official paper
+1. https://roegen-recsys2024.github.io/papers/recsys2024-workshops_paper_208.pdf
