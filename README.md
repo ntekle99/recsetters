@@ -20,6 +20,30 @@ Below are diagrams showing the basic working of the two-tower MLP model:
 
 Our model works along with a Sentence Transformer and user/item embeddings. The results of the model are found by running the main.py file with the appropriate command in step 11 or 15. The results will show a variety of scores. The Hit Rate (HR)@10 is the measure of the test item being in a user's top-k (top-10) list. The Normalized Discounted Cumulative Gain (NDCG)@10 is the metric based on the position of the true item among the top 10 list. This project used the following git repo of a recommendation system on MovieLens and BookCrossing as a reference: [repo](https://github.com/lkp411/BiasedUserHistorySynthesis)
 
+## GPU acceleration (`cuda_ext/`)
+
+The model ships with an optional CUDA extension that speeds up evaluation and
+serving without changing what the model computes:
+
+- **A fused DotCompress kernel.** The scoring head's interaction term builds a
+  `[B, D, D/2]` intermediate and immediately reduces it away. Expanding the
+  product shows it is rank-structured and collapses to five scalars per row
+  (`u·u`, `u·v`, `v·v`, `Σu`, `Σv`), dropping the arithmetic from `O(B·D²/2)` to
+  `O(B·D)` and removing the intermediate entirely. Implemented as a fused
+  forward plus a hand-derived, atomics-free backward.
+- **INT8 embedding tables.** Post-training per-row symmetric quantisation, with
+  a single kernel that fuses the four gathers, three dequantise multiplies and
+  the concat that the item tower otherwise does in eight separate passes.
+- **Cascade ranking.** A speculative-decoding-style draft-then-verify pass: a
+  cheap inner-product draft proposes `γ·k` candidates, the expensive scoring MLP
+  verifies only those. Acceptance against the exhaustive ranking is measured,
+  not assumed.
+
+It is optional and degrades gracefully — without a CUDA toolkit the same maths
+runs through PyTorch fallbacks and nothing else changes. See
+[`cuda_ext/README.md`](cuda_ext/README.md) for the derivations, install steps
+and benchmarks.
+
 ## Further Research
 With this code, we created our base model which uses song name as the essential embedded feature for recommendations. We experimented more with this code and used different item features to observe their results. The other features we worked with were:
 1. Song Summaries for our Apple Music and Spotify Datasets provided by an LLM (Groq API)

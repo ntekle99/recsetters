@@ -3,6 +3,11 @@ import torch
 import torch.nn as nn
 import pdb
 
+try:
+    from cuda_ext.ops import dot_compress as _fused_dot_compress
+except ImportError:  # the GPU extension package is optional
+    _fused_dot_compress = None
+
 class MLP(nn.Module):   # multi layer perceptron, takes input features. Each node represents one feature
     def __init__(self, dims: List[int], add_bias=True, act="gelu", apply_layernorm=False, elemwise_affine=False):   # use gelu activation function
         super().__init__()
@@ -39,7 +44,7 @@ class MLP(nn.Module):   # multi layer perceptron, takes input features. Each nod
 
 
 class DotCompressScoringModel(nn.Module):  
-    def __init__(self, input_dim: int, hidden_dims: List[int], act='gelu'):
+    def __init__(self, input_dim: int, hidden_dims: List[int], act='gelu', use_fused=True):
         super(DotCompressScoringModel, self).__init__()
         self.dot_compress_weight = nn.Parameter(torch.empty(2, input_dim // 2))
         nn.init.xavier_normal_(self.dot_compress_weight)
@@ -48,10 +53,27 @@ class DotCompressScoringModel(nn.Module):
 
         self.dims = [input_dim] + hidden_dims + [1]
         self.output_layer = MLP(self.dims, apply_layernorm=True, elemwise_affine=True)
-    
-    def forward(self, set_embeddings, item_embeddings):
+        # Set to False to force the original eager path (used by the benchmarks
+        # and the correctness tests in cuda_ext/tests).
+        self.use_fused = use_fused
+
+    def _interact_eager(self, set_embeddings, item_embeddings):
         all_embeddings = torch.stack([set_embeddings, item_embeddings], dim=1)  # stack the user and item embeddings as a single vector of 1D
-        combined_representation = torch.matmul(all_embeddings, torch.matmul(all_embeddings.transpose(1, 2), self.dot_compress_weight) + self.dot_compress_bias).flatten(1)  # computes the dot product of (all_embeddings^T * weight matrix) dot all_embeddings, then flatten
+        return torch.matmul(all_embeddings, torch.matmul(all_embeddings.transpose(1, 2), self.dot_compress_weight) + self.dot_compress_bias).flatten(1)  # computes the dot product of (all_embeddings^T * weight matrix) dot all_embeddings, then flatten
+
+    def forward(self, set_embeddings, item_embeddings):
+        # The eager form above builds a [B, D, D/2] tensor and immediately
+        # reduces it away. cuda_ext.ops.dot_compress computes the identical
+        # result from five per-row scalars instead -- same numerics, no
+        # intermediate. See cuda_ext/csrc/dot_compress_cuda.cu for the
+        # derivation and cuda_ext/tests/test_ops.py for the equivalence check.
+        if self.use_fused and _fused_dot_compress is not None:
+            combined_representation = _fused_dot_compress(
+                set_embeddings, item_embeddings,
+                self.dot_compress_weight, self.dot_compress_bias,
+            )
+        else:
+            combined_representation = self._interact_eager(set_embeddings, item_embeddings)
         output = self.output_layer(combined_representation) # pass the output to the MLP
         return output
 
